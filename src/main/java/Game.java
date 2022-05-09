@@ -1,12 +1,25 @@
 import model.Map;
+import model.Point;
+
+import java.util.HashSet;
+import java.util.List;
 
 public class Game {
+    public static final int MAP_SIZE = 10;
 
-    public Map createNewMap(int size){
-        return new Map(new int[size][size]);
-    }
+    private static Randomizer randomizer = new Randomizer();
+    private static Map map = new Map(new int [MAP_SIZE][MAP_SIZE]);
 
     public static void main(String[] args) {
+        MapIllustrator mapIllustrator = new MapIllustrator();
+        System.out.println("check for hits: ");
+        HashSet<Point> checkedList = mapIllustrator.gotHit(List.of(new Point(1, 4), new Point(1, 5), new Point(5, 7), new Point(5, 9), new Point(1,1), new Point(10,10)),
+                List.of(new Point(1, 4), new Point(1, 6), new Point(5, 7), new Point(5, 8), new Point(5, 9), new Point(2,5)));
 
+        System.out.println("Player strikes map:");
+        mapIllustrator.illustrateStrikeMap(map, checkedList);
+        System.out.println("Player Ships map:");
+//        mapIllustrator.illustrateShipMap(map,
+//                List.of(new Point(1, 3), new Point(2, 3), new Point(3, 3)), List.of());
     }
 }
