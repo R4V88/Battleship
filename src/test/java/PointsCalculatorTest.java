@@ -1,6 +1,7 @@
 import model.Player;
 import model.Point;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -19,6 +20,7 @@ class PointsCalculatorTest {
         points = List.of(new Point(4, 6), new Point(3, 5), new Point(1, 9));
     }
 
+    @DisplayName("True when a ship got hit")
     @Test
     void whenTargetIsInRange() {
         //GIVEN
@@ -31,6 +33,7 @@ class PointsCalculatorTest {
         assertEquals(true, value);
     }
 
+    @DisplayName("False when a ship was missed")
     @Test
     void whenTargetIsNotInRange() {
         //GIVEN
@@ -43,6 +46,7 @@ class PointsCalculatorTest {
         assertEquals(false, value);
     }
 
+    @DisplayName("Add a point when a ship got hit")
     @Test
     void whenPointShouldAdd() {
         //GIVEN
@@ -56,6 +60,7 @@ class PointsCalculatorTest {
         assertEquals(1, player.getScore());
     }
 
+    @DisplayName("Do not add a point when a ship was missed")
     @Test
     void whenPointShouldNotAdd() {
         //GIVEN
