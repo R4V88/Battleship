@@ -8,6 +8,7 @@ public class Game {
     public static final int MAP_SIZE = 10;
 
     private static Randomizer randomizer = new Randomizer();
+
     private static Map map = new Map(new int [MAP_SIZE][MAP_SIZE]);
 
     public static void main(String[] args) {

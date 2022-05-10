@@ -1,10 +1,16 @@
 import model.Point;
 import model.Ship;
 
-import java.util.List;
 import java.util.Random;
 
 public class Randomizer {
+
+    private final static String POSITION_HORIZONTAL = "horizontal";
+    private final static String POSITION_VERTICAL = "vertical";
+    private final static String DIRECTION_UP = "up";
+    private final static String DIRECTION_DOWN = "down";
+    private final static String DIRECTION_LEFT = "left";
+    private final static String DIRECTION_RIGHT = "right";
 
     Random random = new Random();
 
@@ -24,48 +30,50 @@ public class Randomizer {
         String direction = "";
         int value = random.nextInt(1, 3);
         switch (position) {
-            case "horizontal" -> {
+            case POSITION_HORIZONTAL -> {
                 if (value == 1) {
-                    direction = "left";
+                    direction = DIRECTION_LEFT;
                 }
                 if (value == 2) {
-                    direction = "right";
+                    direction = DIRECTION_RIGHT;
                 }
             }
-            case "vertical" -> {
+            case POSITION_VERTICAL -> {
                 if (value == 1) {
-                    direction = "up";
+                    direction = DIRECTION_UP;
                 }
                 if (value == 2) {
-                    direction = "down";
+                    direction = DIRECTION_DOWN;
                 }
             }
         }
         return direction;
     }
 
-    public Point randomShipStartPoint(String position, String direction, Ship ship, List<Ship> ships) {
+    public Point randomShipStartPoint(String position, String direction, Ship ship) {
         int x = 0;
         int y = 0;
+        final Integer shipLength = ship.getShipLength();
+
         switch (position) {
-            case "horizontal" -> {
+            case POSITION_HORIZONTAL -> {
                 switch (direction) {
-                    case ("left") -> {
-                        x = random.nextInt(ship.getShipLength(), 11);
+                    case (DIRECTION_LEFT) -> {
+                        x = random.nextInt(shipLength, 11);
                     }
-                    case ("right") -> {
-                        x = random.nextInt(1, 11 - ship.getShipLength());
+                    case (DIRECTION_RIGHT) -> {
+                        x = random.nextInt(1, 11 - shipLength);
                     }
                 }
                 y = random.nextInt(1, 11);
             }
-            case "vertical" -> {
+            case POSITION_VERTICAL -> {
                 switch (direction) {
-                    case ("up") -> {
-                        y = random.nextInt(ship.getShipLength(), 11);
+                    case (DIRECTION_UP) -> {
+                        y = random.nextInt(1, 11 - shipLength);
                     }
-                    case ("down") -> {
-                        y = random.nextInt(1, 11 - ship.getShipLength());
+                    case (DIRECTION_DOWN) -> {
+                        y = random.nextInt(shipLength, 11);
                     }
                 }
                 x = random.nextInt(1, 11);
