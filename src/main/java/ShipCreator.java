@@ -1,3 +1,4 @@
+import model.Point;
 import model.Ship;
 
 import java.util.List;
@@ -8,7 +9,7 @@ public class ShipCreator {
         return new Ship();
     }
 
-    Boolean checkIfShipLocationIsOccupiedByOther(List<Ship> ships) {
+    Boolean checkIfShipLocationIsOccupiedByOther(List<Ship> ships, List<Point> shipToCreate) {
         return false;
     }
 }
