@@ -1,5 +1,6 @@
 import model.Player;
 import model.Point;
+import model.Ship;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,14 +11,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PointsCalculatorTest {
     private final PointsCalculator pointsCalculator = new PointsCalculator();
-    List<Point> points;
+    List<Ship> ships;
+    Ship ship;
     Point target;
     Player player;
     boolean value;
 
     @BeforeEach
     void setUp() {
-        points = List.of(new Point(4, 6), new Point(3, 5), new Point(1, 9));
+        ship = new Ship();
+        ship.setPoints(List.of(new Point(4, 6), new Point(3, 5), new Point(1, 9)));
+        ships = List.of(ship);
     }
 
     @DisplayName("True when a ship got hit")
@@ -27,7 +31,7 @@ class PointsCalculatorTest {
         target = new Point(4, 6);
 
         //WHEN
-        Boolean value = pointsCalculator.checkHit(target, points);
+        Boolean value = pointsCalculator.checkHit(target, ships);
 
         //THEN
         assertEquals(true, value);
@@ -40,7 +44,7 @@ class PointsCalculatorTest {
         target = new Point(1, 7);
 
         //WHEN
-        Boolean value = pointsCalculator.checkHit(target, points);
+        Boolean value = pointsCalculator.checkHit(target, ships);
 
         //THEN
         assertEquals(false, value);
