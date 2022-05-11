@@ -8,7 +8,7 @@ public class PointsCalculator {
     Boolean checkHit(Point target, List<Point> ship) {
         boolean isHit = false;
         for (Point point : ship) {
-            if (point.getX() == target.getX() && point.getY() == target.getY()) {
+            if (point.equals(target)) {
                 isHit = true;
             }
         }
