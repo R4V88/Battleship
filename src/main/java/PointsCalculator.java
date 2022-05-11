@@ -6,8 +6,9 @@ import java.util.List;
 
 public class PointsCalculator {
 
-    Boolean checkHit(Point target, List<Ship> ships) {
+    public Boolean checkHit(Point target, List<Ship> ships) {
         List<Point> shipsPoints = new java.util.ArrayList<>(List.of());
+
         for (Ship ship : ships) {
             shipsPoints.addAll(ship.getPoints());
         }
@@ -22,7 +23,7 @@ public class PointsCalculator {
         return isHit;
     }
 
-    void recalculatePoints(Player player, Boolean value) {
+    public void recalculatePoints(Player player, Boolean value) {
         if(value) {
             player.setScore(player.getScore() + 1);
         }

@@ -1,4 +1,6 @@
+import model.Direction;
 import model.Point;
+import model.Position;
 import model.Ship;
 
 import java.util.ArrayList;
@@ -6,25 +8,26 @@ import java.util.Collections;
 import java.util.List;
 
 public class ShipCreator {
-    Randomizer randomizer = new Randomizer();
+    private final Randomizer randomizer = new Randomizer();
 
-    Ship createShip(int length,  List<Ship> ships) {
+    public Ship createShip(int length, List<Ship> ships) {
         Ship createdShip = new Ship();
         createdShip.setShipLength(length);
 
         boolean loop = true;
 
         do {
-            String position = randomizer.randomPosition();
-            String direction = randomizer.randomDirection(position);
+            Position position = randomizer.randomPosition();
+            Direction direction = randomizer.randomDirection(position);
             Point startPoint = randomizer.randomShipStartPoint(position, direction, createdShip.getShipLength());
             List<Point> points = new ArrayList<>(List.of(startPoint));
             int startX = startPoint.getX();
             int startY = startPoint.getY();
+
             switch (position) {
-                case Randomizer.POSITION_HORIZONTAL -> {
+                case HORIZONTAL -> {
                     switch (direction) {
-                        case (Randomizer.DIRECTION_LEFT) -> {
+                        case LEFT -> {
                             for (int i = 0; i < length - 1; i++) {
                                 --startX;
                                 points.add(new Point(startX, startY));
@@ -34,7 +37,7 @@ public class ShipCreator {
                                 loop = false;
                             }
                         }
-                        case (Randomizer.DIRECTION_RIGHT) -> {
+                        case RIGHT -> {
                             for (int i = 0; i < length - 1; i++) {
                                 ++startX;
                                 points.add(new Point(startX, startY));
@@ -46,9 +49,9 @@ public class ShipCreator {
                         }
                     }
                 }
-                case Randomizer.POSITION_VERTICAL -> {
+                case VERTICAL -> {
                     switch (direction) {
-                        case (Randomizer.DIRECTION_UP) -> {
+                        case UP -> {
                             for (int i = 0; i < length - 1; i++) {
                                 ++startY;
                                 points.add(new Point(startX, startY));
@@ -58,7 +61,7 @@ public class ShipCreator {
                                 loop = false;
                             }
                         }
-                        case (Randomizer.DIRECTION_DOWN) -> {
+                        case DOWN -> {
                             for (int i = 0; i < length - 1; i++) {
                                 --startY;
                                 points.add(new Point(startX, startY));

@@ -1,41 +1,41 @@
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import model.Direction;
 import model.Point;
+import model.Position;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
+import static model.Direction.DOWN;
+import static model.Direction.LEFT;
+import static model.Direction.RIGHT;
+import static model.Direction.UP;
+import static model.Position.HORIZONTAL;
+import static model.Position.VERTICAL;
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class RandomizerTest {
-    final String positionHorizontal = "horizontal";
-    final String positionVertical = "vertical";
-    final String directionUp = "up";
-    final String directionDown = "down";
-    final String directionLeft = "left";
-    final String directionRight = "right";
-    final Integer shipLong = 5;
-    final Integer shipShort = 4;
-    final Randomizer randomizer = new Randomizer();
-    List<String> positions;
-    List<String> directions;
-    List<String> horizontalDirections;
-    List<String> verticalDirections;
+    private final Integer shipLong = 5;
+    private final Randomizer randomizer = new Randomizer();
+    private List<Position> positions;
+    private List<Direction> horizontalDirections;
+    private List<Direction> verticalDirections;
 
     @BeforeEach
     void setUp() {
         //GIVEN
-        positions = List.of(positionHorizontal, positionVertical);
-        directions = List.of(directionUp, directionDown, directionLeft, directionRight);
-        verticalDirections = List.of(directionUp, directionDown);
-        horizontalDirections = List.of(directionLeft, directionRight);
+        positions = List.of(HORIZONTAL, VERTICAL);
+        verticalDirections = List.of(UP, DOWN);
+        horizontalDirections = List.of(LEFT, RIGHT);
     }
 
     @Test
     void randomPositionShouldBeAsGiven() {
         //WHEN
-        String position = randomizer.randomPosition();
+        Position position = randomizer.randomPosition();
 
         //THEN
         boolean contains = positions.contains(position);
@@ -45,10 +45,10 @@ class RandomizerTest {
     @Test
     void randomPositionShouldBeHorizontalOrVertical() {
         //WHEN
-        String position = randomizer.randomPosition();
+        Position position = randomizer.randomPosition();
 
         //THEN
-        for (String pos : positions) {
+        for (Position pos : positions) {
             if (pos.equals(position)) {
                 Assertions.assertEquals(pos, position);
             }
@@ -58,10 +58,10 @@ class RandomizerTest {
     @Test
     void randomDirectionShouldBeLeftOrRight() {
         //WHEN
-        String dicrection = randomizer.randomDirection(positionHorizontal);
+        Direction dicrection = randomizer.randomDirection(HORIZONTAL);
 
         //THEN
-        for (String dir : horizontalDirections) {
+        for (Direction dir : horizontalDirections) {
             if (dir.equals(dicrection)) {
                 Assertions.assertEquals(dir, dicrection);
             }
@@ -72,10 +72,10 @@ class RandomizerTest {
     @Test
     void randomDirectionShouldBeUpOrDown() {
         //WHEN
-        String dicrection = randomizer.randomDirection(positionVertical);
+        Direction dicrection = randomizer.randomDirection(VERTICAL);
 
         //THEN
-        for (String dir : verticalDirections) {
+        for (Direction dir : verticalDirections) {
             if (dir.equals(dicrection)) {
                 Assertions.assertEquals(dir, dicrection);
             }
@@ -90,7 +90,7 @@ class RandomizerTest {
         List<Integer> givenY = List.of(1, 2, 3, 4, 5, 6);
 
         //WHEN
-        Point point = randomizer.randomShipStartPoint(positionVertical, directionUp, shipLong);
+        Point point = randomizer.randomShipStartPoint(VERTICAL, UP, shipLong);
         int pointX = point.getX();
         int pointY = point.getY();
 
@@ -115,7 +115,7 @@ class RandomizerTest {
         List<Integer> givenY = List.of(5, 6, 7, 8, 9, 10);
 
         //WHEN
-        Point point = randomizer.randomShipStartPoint(positionVertical, directionUp, shipLong);
+        Point point = randomizer.randomShipStartPoint(VERTICAL, UP, shipLong);
         int pointX = point.getX();
         int pointY = point.getY();
 
@@ -140,7 +140,7 @@ class RandomizerTest {
         List<Integer> givenY = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
         //WHEN
-        Point point = randomizer.randomShipStartPoint(positionHorizontal, directionLeft, shipLong);
+        Point point = randomizer.randomShipStartPoint(HORIZONTAL, LEFT, shipLong);
         int pointX = point.getX();
         int pointY = point.getY();
 
@@ -165,7 +165,7 @@ class RandomizerTest {
         List<Integer> givenY = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
         //WHEN
-        Point point = randomizer.randomShipStartPoint(positionHorizontal, directionRight, shipLong);
+        Point point = randomizer.randomShipStartPoint(VERTICAL, RIGHT, shipLong);
         int pointX = point.getX();
         int pointY = point.getY();
 

@@ -1,76 +1,80 @@
+import model.Direction;
 import model.Point;
+import model.Position;
 
 import java.util.Random;
 
-public class Randomizer {
+import static model.Direction.DOWN;
+import static model.Direction.LEFT;
+import static model.Direction.RIGHT;
+import static model.Direction.UP;
+import static model.Position.HORIZONTAL;
+import static model.Position.VERTICAL;
 
-    public final static String POSITION_HORIZONTAL = "horizontal";
-    public final static String POSITION_VERTICAL = "vertical";
-    public final static String DIRECTION_UP = "up";
-    public final static String DIRECTION_DOWN = "down";
-    public final static String DIRECTION_LEFT = "left";
-    public final static String DIRECTION_RIGHT = "right";
+public class Randomizer {
 
     Random random = new Random();
 
-    public String randomPosition() {
-        String position = "";
+    public Position randomPosition() {
+        Position position = null;
+
         int value = random.nextInt(1, 3);
         if (value == 2) {
-            position = "vertical";
+            position = VERTICAL;
         }
         if (value == 1) {
-            position = "horizontal";
+            position = HORIZONTAL;
         }
         return position;
     }
 
-    public String randomDirection(String position) {
-        String direction = "";
+    public Direction randomDirection(Position position) {
+        Direction direction = null;
+
         int value = random.nextInt(1, 3);
         switch (position) {
-            case POSITION_HORIZONTAL -> {
+            case HORIZONTAL -> {
                 if (value == 1) {
-                    direction = DIRECTION_LEFT;
+                    direction = LEFT;
                 }
                 if (value == 2) {
-                    direction = DIRECTION_RIGHT;
+                    direction = RIGHT;
                 }
             }
-            case POSITION_VERTICAL -> {
+            case VERTICAL -> {
                 if (value == 1) {
-                    direction = DIRECTION_UP;
+                    direction = UP;
                 }
                 if (value == 2) {
-                    direction = DIRECTION_DOWN;
+                    direction = DOWN;
                 }
             }
         }
         return direction;
     }
 
-    public Point randomShipStartPoint(String position, String direction, int shipLength) {
+    public Point randomShipStartPoint(Position position, Direction direction, int shipLength) {
         int x = 0;
         int y = 0;
 
         switch (position) {
-            case POSITION_HORIZONTAL -> {
+            case HORIZONTAL -> {
                 switch (direction) {
-                    case (DIRECTION_LEFT) -> {
+                    case LEFT -> {
                         x = random.nextInt(shipLength, 11);
                     }
-                    case (DIRECTION_RIGHT) -> {
+                    case RIGHT -> {
                         x = random.nextInt(1, 11 - shipLength);
                     }
                 }
                 y = random.nextInt(1, 11);
             }
-            case POSITION_VERTICAL -> {
+            case VERTICAL -> {
                 switch (direction) {
-                    case (DIRECTION_UP) -> {
+                    case UP -> {
                         y = random.nextInt(1, 11 - shipLength);
                     }
-                    case (DIRECTION_DOWN) -> {
+                    case DOWN -> {
                         y = random.nextInt(shipLength, 11);
                     }
                 }
