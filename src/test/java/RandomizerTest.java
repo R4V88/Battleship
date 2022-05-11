@@ -1,7 +1,6 @@
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import model.Point;
-import model.Ship;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,6 @@ class RandomizerTest {
     List<String> directions;
     List<String> horizontalDirections;
     List<String> verticalDirections;
-    Ship ship;
 
     @BeforeEach
     void setUp() {
@@ -90,11 +88,9 @@ class RandomizerTest {
         //GIVEN
         List<Integer> givenX = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         List<Integer> givenY = List.of(1, 2, 3, 4, 5, 6);
-        ship = new Ship();
-        ship.setShipLength(shipLong);
 
         //WHEN
-        Point point = randomizer.randomShipStartPoint(positionVertical, directionUp, ship);
+        Point point = randomizer.randomShipStartPoint(positionVertical, directionUp, shipLong);
         int pointX = point.getX();
         int pointY = point.getY();
 
@@ -117,11 +113,9 @@ class RandomizerTest {
         //GIVEN
         List<Integer> givenX = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
         List<Integer> givenY = List.of(5, 6, 7, 8, 9, 10);
-        ship = new Ship();
-        ship.setShipLength(shipLong);
 
         //WHEN
-        Point point = randomizer.randomShipStartPoint(positionVertical, directionUp, ship);
+        Point point = randomizer.randomShipStartPoint(positionVertical, directionUp, shipLong);
         int pointX = point.getX();
         int pointY = point.getY();
 
@@ -144,11 +138,9 @@ class RandomizerTest {
         //GIVEN
         List<Integer> givenX = List.of(5, 6, 7, 8, 9, 10);
         List<Integer> givenY = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        ship = new Ship();
-        ship.setShipLength(shipLong);
 
         //WHEN
-        Point point = randomizer.randomShipStartPoint(positionHorizontal, directionLeft, ship);
+        Point point = randomizer.randomShipStartPoint(positionHorizontal, directionLeft, shipLong);
         int pointX = point.getX();
         int pointY = point.getY();
 
@@ -171,11 +163,9 @@ class RandomizerTest {
         //GIVEN
         List<Integer> givenX = List.of(1, 2, 3, 4, 5, 6);
         List<Integer> givenY = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
-        ship = new Ship();
-        ship.setShipLength(shipLong);
 
         //WHEN
-        Point point = randomizer.randomShipStartPoint(positionHorizontal, directionRight, ship);
+        Point point = randomizer.randomShipStartPoint(positionHorizontal, directionRight, shipLong);
         int pointX = point.getX();
         int pointY = point.getY();
 

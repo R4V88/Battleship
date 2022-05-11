@@ -1,16 +1,15 @@
 import model.Point;
-import model.Ship;
 
 import java.util.Random;
 
 public class Randomizer {
 
-    private final static String POSITION_HORIZONTAL = "horizontal";
-    private final static String POSITION_VERTICAL = "vertical";
-    private final static String DIRECTION_UP = "up";
-    private final static String DIRECTION_DOWN = "down";
-    private final static String DIRECTION_LEFT = "left";
-    private final static String DIRECTION_RIGHT = "right";
+    public final static String POSITION_HORIZONTAL = "horizontal";
+    public final static String POSITION_VERTICAL = "vertical";
+    public final static String DIRECTION_UP = "up";
+    public final static String DIRECTION_DOWN = "down";
+    public final static String DIRECTION_LEFT = "left";
+    public final static String DIRECTION_RIGHT = "right";
 
     Random random = new Random();
 
@@ -50,10 +49,9 @@ public class Randomizer {
         return direction;
     }
 
-    public Point randomShipStartPoint(String position, String direction, Ship ship) {
+    public Point randomShipStartPoint(String position, String direction, int shipLength) {
         int x = 0;
         int y = 0;
-        final Integer shipLength = ship.getShipLength();
 
         switch (position) {
             case POSITION_HORIZONTAL -> {
