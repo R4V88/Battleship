@@ -13,6 +13,5 @@ import java.util.List;
 @NoArgsConstructor
 public class Ship {
     Integer shipLength;
-    String name;
     List<Point> points;
 }
