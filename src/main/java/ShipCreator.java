@@ -11,7 +11,9 @@ public class ShipCreator {
     Ship createShip(int length,  List<Ship> ships) {
         Ship createdShip = new Ship();
         createdShip.setShipLength(length);
+
         boolean loop = true;
+
         do {
             String position = randomizer.randomPosition();
             String direction = randomizer.randomDirection(position);
@@ -19,15 +21,13 @@ public class ShipCreator {
             List<Point> points = new ArrayList<>(List.of(startPoint));
             int startX = startPoint.getX();
             int startY = startPoint.getY();
-            int newX;
-            int newY;
             switch (position) {
                 case Randomizer.POSITION_HORIZONTAL -> {
                     switch (direction) {
                         case (Randomizer.DIRECTION_LEFT) -> {
                             for (int i = 0; i < length - 1; i++) {
-                                newX = --startX;
-                                points.add(new Point(newX, startY));
+                                --startX;
+                                points.add(new Point(startX, startY));
                             }
                             if (!checkIfShipLocationIsOccupiedByOther(ships, points)) {
                                 createdShip = new Ship(length, points);
@@ -36,8 +36,8 @@ public class ShipCreator {
                         }
                         case (Randomizer.DIRECTION_RIGHT) -> {
                             for (int i = 0; i < length - 1; i++) {
-                                newX = ++startX;
-                                points.add(new Point(newX, startY));
+                                ++startX;
+                                points.add(new Point(startX, startY));
                             }
                             if (!checkIfShipLocationIsOccupiedByOther(ships, points)) {
                                 createdShip = new Ship(length, points);
@@ -50,8 +50,8 @@ public class ShipCreator {
                     switch (direction) {
                         case (Randomizer.DIRECTION_UP) -> {
                             for (int i = 0; i < length - 1; i++) {
-                                newY = ++startY;
-                                points.add(new Point(startX, newY));
+                                ++startY;
+                                points.add(new Point(startX, startY));
                             }
                             if (!checkIfShipLocationIsOccupiedByOther(ships, points)) {
                                 createdShip = new Ship(length, points);
@@ -60,8 +60,8 @@ public class ShipCreator {
                         }
                         case (Randomizer.DIRECTION_DOWN) -> {
                             for (int i = 0; i < length - 1; i++) {
-                                newY = --startY;
-                                points.add(new Point(startX, newY));
+                                --startY;
+                                points.add(new Point(startX, startY));
                             }
                             if (!checkIfShipLocationIsOccupiedByOther(ships, points)) {
                                 createdShip = new Ship(length, points);
