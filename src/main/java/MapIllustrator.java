@@ -4,18 +4,18 @@ import model.Point;
 import java.util.List;
 
 public class MapIllustrator {
-    private static char alphabetStart = 'A';
-    private static final String ANSI_RED_MISS = "\u001B[31m";
-    private static final String ANSI_BLUE_SEA = "\u001B[34m";
-    private static final String ANSI_GREEN_HIT = "\u001B[32m";
-    private static final String ANSI_YELLOW_NUMBERS = "\u001B[33m";
-    private static final String ANSI_PURPLE_SHIP = "\u001B[35m";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_BLUE = "\u001B[34m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_PURPLE = "\u001B[35m";
 
     public void illustrateStrikeMap(Map map, List<Point> strikes) {
-        illustrateMapHeader(map);
+        char alphabetStart = 'A';
+        illustrateStrikesMapHeader(map);
 
         for (int i = 1; i <= map.getMap()[1].length; i++) {
-            System.out.print(ANSI_YELLOW_NUMBERS + alphabetStart + " ");
+            System.out.print(ANSI_YELLOW + alphabetStart + " ");
             alphabetStart++;
 
             for (int j = 1; j <= map.getMap()[0].length; j++) {
@@ -26,22 +26,69 @@ public class MapIllustrator {
         }
     }
 
-    private void illustrateMapHeader(Map map) {
-        System.out.println(ANSI_GREEN_HIT + "Playes Hits map: ");
+    private void illustrateStrikesMapHeader(Map map) {
+        System.out.println(ANSI_GREEN + "Player Hits map: ");
         System.out.print(" ");
         for (int i = 1; i <= map.getMap()[1].length; i++)
-            System.out.print(" " + ANSI_YELLOW_NUMBERS + i);
+            System.out.print(" " + ANSI_YELLOW + i);
         System.out.println();
     }
 
     private String returnTextColorAndSignForStrikeMap(List<Point> strikes, int x, int y) {
-        String color = ANSI_BLUE_SEA + "~";
+        String color = ANSI_BLUE + "~";
         for (Point point : strikes) {
             if (point.getX() == y && point.getY() == x) {
                 if (point.isHit()) {
-                    color = ANSI_GREEN_HIT + "+" + ANSI_BLUE_SEA;
+                    color = ANSI_GREEN + "+" + ANSI_BLUE;
                 } else {
-                    color = ANSI_RED_MISS + "-" + ANSI_BLUE_SEA;
+                    color = ANSI_RED + "-" + ANSI_BLUE;
+                }
+            }
+        }
+        return color;
+    }
+
+    public void illustrateShipMap(Map map, List<Point> ships, List<Point> opponentStrikes) {
+        char alphabetStart = 'A';
+        illustrateShipsMapHeader(map);
+
+        for (int i = 1; i <= map.getMap()[1].length; i++) {
+            System.out.print(ANSI_YELLOW + alphabetStart + " ");
+            alphabetStart++;
+
+            for (int j = 1; j <= map.getMap()[0].length; j++) {
+                String color = returnTextColorAndSignForShipsMap(ships, i, j, opponentStrikes);
+                System.out.print(color + " ");
+            }
+            System.out.println();
+        }
+
+    }
+
+    private void illustrateShipsMapHeader(Map map) {
+        System.out.println(ANSI_PURPLE + "Player Ships map: ");
+        System.out.print(" ");
+        for (int i = 1; i <= map.getMap()[1].length; i++)
+            System.out.print(" " + ANSI_YELLOW + i);
+        System.out.println();
+    }
+
+    private String returnTextColorAndSignForShipsMap(List<Point> ships, int x, int y, List<Point> opponentStrikes) {
+        String color = ANSI_BLUE + "~";
+
+        for(Point strike: opponentStrikes) {
+            if(strike.getX() == y &&  strike.getY() == x){
+                if (!strike.isHit()) {
+                    color = ANSI_PURPLE + "X" + ANSI_BLUE;
+                }
+            }
+        }
+
+        for(Point ship : ships) {
+            if(ship.getX() == y && ship.getY() == x ) {
+                color = ANSI_GREEN + "O" + ANSI_BLUE;
+                if(ship.isHit()) {
+                    color = ANSI_RED + "X" + ANSI_BLUE;
                 }
             }
         }
