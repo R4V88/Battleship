@@ -83,4 +83,10 @@ public class Randomizer {
         }
         return new Point(x, y);
     }
+
+    public Point getRandomPoint() {
+        int x = random.nextInt(1, 11);
+        int y = random.nextInt(1, 11);
+        return new Point(x, y);
+    }
 }

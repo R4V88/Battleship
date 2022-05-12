@@ -15,6 +15,8 @@ import static model.Direction.RIGHT;
 import static model.Direction.UP;
 import static model.Position.HORIZONTAL;
 import static model.Position.VERTICAL;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 class RandomizerTest {
@@ -39,7 +41,7 @@ class RandomizerTest {
 
         //THEN
         boolean contains = positions.contains(position);
-        Assertions.assertTrue(contains);
+        assertTrue(contains);
     }
 
     @Test
@@ -50,7 +52,7 @@ class RandomizerTest {
         //THEN
         for (Position pos : positions) {
             if (pos.equals(position)) {
-                Assertions.assertEquals(pos, position);
+                assertEquals(pos, position);
             }
         }
     }
@@ -63,7 +65,7 @@ class RandomizerTest {
         //THEN
         for (Direction dir : horizontalDirections) {
             if (dir.equals(dicrection)) {
-                Assertions.assertEquals(dir, dicrection);
+                assertEquals(dir, dicrection);
             }
         }
 
@@ -77,7 +79,7 @@ class RandomizerTest {
         //THEN
         for (Direction dir : verticalDirections) {
             if (dir.equals(dicrection)) {
-                Assertions.assertEquals(dir, dicrection);
+                assertEquals(dir, dicrection);
             }
         }
 
@@ -97,12 +99,12 @@ class RandomizerTest {
         //THEN
         for (Integer value : givenX) {
             if (pointX == value) {
-                Assertions.assertEquals(value, pointX);
+                assertEquals(value, pointX);
             }
         }
         for (Integer value : givenY) {
             if (pointY == value) {
-                Assertions.assertEquals(value, pointY);
+                assertEquals(value, pointY);
             }
         }
 
@@ -122,12 +124,12 @@ class RandomizerTest {
         //THEN
         for (Integer value : givenX) {
             if (pointX == value) {
-                Assertions.assertEquals(value, pointX);
+                assertEquals(value, pointX);
             }
         }
         for (Integer value : givenY) {
             if (pointY == value) {
-                Assertions.assertEquals(value, pointY);
+                assertEquals(value, pointY);
             }
         }
 
@@ -147,12 +149,12 @@ class RandomizerTest {
         //THEN
         for (Integer value : givenX) {
             if (pointX == value) {
-                Assertions.assertEquals(value, pointX);
+                assertEquals(value, pointX);
             }
         }
         for (Integer value : givenY) {
             if (pointY == value) {
-                Assertions.assertEquals(value, pointY);
+                assertEquals(value, pointY);
             }
         }
 
@@ -172,13 +174,25 @@ class RandomizerTest {
         //THEN
         for (Integer value : givenX) {
             if (pointX == value) {
-                Assertions.assertEquals(value, pointX);
+                assertEquals(value, pointX);
             }
         }
         for (Integer value : givenY) {
             if (pointY == value) {
-                Assertions.assertEquals(value, pointY);
+                assertEquals(value, pointY);
             }
         }
+    }
+
+    @Test
+    void generatedRandomPointShouldbeInGivenRange(){
+        //GIVEN
+        List<Integer> range = List.of(1 ,2 ,3,4,5,6,7,8,9,10);
+
+        //WHEN
+        Point point = randomizer.getRandomPoint();
+
+        assertTrue(range.contains(point.getX()));
+        assertTrue(range.contains(point.getY()));
     }
 }

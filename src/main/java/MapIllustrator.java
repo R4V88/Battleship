@@ -1,9 +1,11 @@
 import model.Map;
 import model.Point;
+import model.Ship;
 
 import java.util.List;
 
 public class MapIllustrator {
+    private final ShipCreator shipCreator = new ShipCreator();
     private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_BLUE = "\u001B[34m";
     private static final String ANSI_GREEN = "\u001B[32m";
@@ -37,7 +39,7 @@ public class MapIllustrator {
     private String returnTextColorAndSignForStrikeMap(List<Point> strikes, int x, int y) {
         String color = ANSI_BLUE + "~";
         for (Point point : strikes) {
-            if (point.getX() == y && point.getY() == x) {
+            if (point.getX() == x && point.getY() == y) {
                 if (point.isHit()) {
                     color = ANSI_GREEN + "+" + ANSI_BLUE;
                 } else {
@@ -48,7 +50,8 @@ public class MapIllustrator {
         return color;
     }
 
-    public void illustrateShipMap(Map map, List<Point> ships, List<Point> opponentStrikes) {
+    public void illustrateShipMap(Map map, List<Ship> ships, List<Point> opponentStrikes) {
+        List<Point> shipsPoints = shipCreator.getAllShipsPoints(ships);
         char alphabetStart = 'A';
         illustrateShipsMapHeader(map);
 
@@ -57,7 +60,7 @@ public class MapIllustrator {
             alphabetStart++;
 
             for (int j = 1; j <= map.getMap()[0].length; j++) {
-                String color = returnTextColorAndSignForShipsMap(ships, i, j, opponentStrikes);
+                String color = returnTextColorAndSignForShipsMap(shipsPoints, i, j, opponentStrikes);
                 System.out.print(color + " ");
             }
             System.out.println();
@@ -77,7 +80,7 @@ public class MapIllustrator {
         String color = ANSI_BLUE + "~";
 
         for(Point strike: opponentStrikes) {
-            if(strike.getX() == y &&  strike.getY() == x){
+            if(strike.getX() == x &&  strike.getY() == y){
                 if (!strike.isHit()) {
                     color = ANSI_PURPLE + "X" + ANSI_BLUE;
                 }

@@ -4,7 +4,13 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ShipCreatorTest {
     private final ShipCreator shipCreator = new ShipCreator();
@@ -19,8 +25,8 @@ class ShipCreatorTest {
         Ship createdShip = shipCreator.createShip(length, ships);
 
         //THEN
-        Assertions.assertNotNull(createdShip.getShipLength());
-        Assertions.assertNotNull(createdShip.getPoints());
+        assertNotNull(createdShip.getShipLength());
+        assertNotNull(createdShip.getPoints());
     }
 
     @Test
@@ -42,7 +48,7 @@ class ShipCreatorTest {
         totalShipsPoints.addAll(existingShip2.getPoints());
 
         for(Point point : createdShip.getPoints()) {
-            Assertions.assertFalse(totalShipsPoints.contains(point));
+            assertFalse(totalShipsPoints.contains(point));
         }
     }
 
@@ -65,7 +71,7 @@ class ShipCreatorTest {
         totalShipsPoints.addAll(existingShip2.getPoints());
 
         for(Point point : createdShip.getPoints()) {
-            Assertions.assertFalse(totalShipsPoints.contains(point));
+            assertFalse(totalShipsPoints.contains(point));
         }
     }
 
@@ -92,14 +98,32 @@ class ShipCreatorTest {
 
         //THEN
         for(Point point : ship1.getPoints()) {
-            Assertions.assertFalse(ship2.getPoints().contains(point));
+            assertFalse(ship2.getPoints().contains(point));
         }
         for (Point point : ship2.getPoints()) {
-            Assertions.assertFalse(ship3.getPoints().contains(point));
+            assertFalse(ship3.getPoints().contains(point));
         }
 
         for(Point point : ship3.getPoints()) {
-            Assertions.assertFalse(ship1.getPoints().contains(point));
+            assertFalse(ship1.getPoints().contains(point));
         }
+    }
+
+    @Test
+    void testIfReturnedListContainsAllPoints() {
+        //GIVEN
+        Ship ship1 = new Ship(3, List.of(new Point(1,5), new Point(1,6), new Point(1,7)));
+        Ship ship2 = new Ship(2, List.of(new Point(2,5), new Point(2,6)));
+        List<Point> totalPoints = new ArrayList<>(List.of());
+        totalPoints.addAll(ship1.getPoints());
+        totalPoints.addAll(ship2.getPoints());
+        List<Ship> ships = List.of(ship1, ship2);
+
+        //WHEN
+        final List<Point> allShipsPoints = shipCreator.getAllShipsPoints(ships);
+
+        //THEN
+        assertEquals(allShipsPoints.size(), totalPoints.size());
+        assertTrue(allShipsPoints.containsAll(totalPoints));
     }
 }

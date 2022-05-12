@@ -89,7 +89,7 @@ public class ShipCreator {
         return false;
     }
 
-    private List<Point> getAllShipsPoints(List<Ship> ships) {
+    public List<Point> getAllShipsPoints(List<Ship> ships) {
         List<Point> allShips = new ArrayList<>(Collections.emptyList());
         for (Ship ship : ships) {
             List<Point> shipPoints = ship.getPoints();

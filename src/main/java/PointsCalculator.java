@@ -6,19 +6,16 @@ import java.util.List;
 
 public class PointsCalculator {
 
+    ShipCreator shipCreator = new ShipCreator();
+
     public Boolean checkHit(Point target, List<Ship> ships) {
-        List<Point> shipsPoints = new java.util.ArrayList<>(List.of());
-
-        for (Ship ship : ships) {
-            shipsPoints.addAll(ship.getPoints());
-        }
-
         boolean isHit = false;
+        List<Point> shipsPoints = shipCreator.getAllShipsPoints(ships);
 
         for (Point point : shipsPoints) {
-            if (target.equals(point)) {
+            if(point.equals(target)){
                 isHit = true;
-            }
+            };
         }
         return isHit;
     }
