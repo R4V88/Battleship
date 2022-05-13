@@ -7,77 +7,37 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import static model.Colors.ANSI_RED;
+import static model.Colors.ANSI_WHITE;
+
 public class Game {
-    public static final int MAP_SIZE = 10;
+    private final Randomizer randomizer = new Randomizer();
+    private final Scanner scanner = new Scanner(System.in);
+    private final ShipCreator shipCreator = new ShipCreator();
+    private final PointsCalculator pointsCalculator = new PointsCalculator();
+    private final MapIllustrator mapIllustrator = new MapIllustrator();
+    private final int mapSize = 10;
+    private final Map map = new Map(new int[mapSize][mapSize]);
+    private int round = 1;
 
-    private final static Map map = new Map(new int[MAP_SIZE][MAP_SIZE]);
-
-    public static void main(String[] args) {
+    public void start() {
         boolean loop = true;
 
-        Randomizer randomizer = new Randomizer();
-        Scanner scanner = new Scanner(System.in);
-        int round = 1;
-        int playerScore = 0;
-        int aiScore = 0;
-        ShipCreator shipCreator = new ShipCreator();
-        PointsCalculator pointsCalculator = new PointsCalculator();
+        final String name = welcomeCommunicate(scanner);
 
-        MapIllustrator playerStrikesMap = new MapIllustrator();
-        MapIllustrator playerShipsMap = new MapIllustrator();
-
-        //player section
-        Player player = new Player();
-        List<Ship> playerShips = new ArrayList<>(List.of());
-        Ship playerBattleship = shipCreator.createShip(5, playerShips);
-        playerShips.add(playerBattleship);
-        Ship playerDestroyer1 = shipCreator.createShip(4, playerShips);
-        playerShips.add(playerDestroyer1);
-        Ship playerDestroyer2 = shipCreator.createShip(4, playerShips);
-        playerShips.add(playerDestroyer2);
-
-        List<Point> playerStrikes = new ArrayList<>(List.of());
-
-        player.setHits(playerStrikes);
-        player.setShips(playerShips);
-        player.setScore(playerScore);
-        // ai section
-        Player ai = new Player();
-        List<Ship> aiShips = new ArrayList<>(List.of());
-        Ship aiBattleship = shipCreator.createShip(5, aiShips);
-        aiShips.add(aiBattleship);
-        Ship aiDestroyer1 = shipCreator.createShip(4, aiShips);
-        aiShips.add(aiDestroyer1);
-        Ship aiDestroyer2 = shipCreator.createShip(4, aiShips);
-        aiShips.add(aiDestroyer2);
-
-        List<Point> aiStrikes = new ArrayList<>(List.of());
-
-        ai.setName("AI");
-        ai.setHits(aiStrikes);
-        ai.setShips(aiShips);
-        ai.setScore(aiScore);
-
-        //game
-        System.out.println("Welcome into Battleships game");
-        System.out.print("Please type your name: ");
-        String name = scanner.next();
-        System.out.println(name + " and AIs ships are randomly generated");
-        System.out.println("To shoot type (X,Y) coordinates when asked for");
-        System.out.println("Generating maps...");
-
-        player.setName(name);
+        Player player = createNewPlayer(name, shipCreator);
+        Player ai = createNewPlayer("ai", shipCreator);
 
         do {
-            System.out.println("\n\n\nRound: " + round);
+            System.out.println(ANSI_RED.getColor() + "\n\n\nRound: " + round);
             System.out.println(player.getName() + " score: " + player.getScore());
             System.out.println("AI score: " + ai.getScore());
-            playerStrikesMap.illustrateStrikeMap(map, player.getHits());
-            playerShipsMap.illustrateShipMap(map, player.getShips(), ai.getHits());
+            mapIllustrator.illustrateStrikeMap(map, player.getHits());
+            mapIllustrator.illustrateShipMap(map, player.getShips(), ai.getHits());
 
             Point playerTarget = addNewPointValidation(player.getHits(), scanner);
             boolean isHit;
-            isHit = pointsCalculator.checkHit(playerTarget, aiShips);
+            isHit = pointsCalculator.checkHit(playerTarget, ai.getShips());
             if (isHit) {
                 pointsCalculator.recalculatePoints(player, isHit);
                 System.out.println("You hit the enemy target!");
@@ -90,7 +50,7 @@ public class Game {
             }
 
             Point aiTarget = randomizer.getRandomPoint(ai.getHits());
-            isHit = pointsCalculator.checkHit(aiTarget, playerShips);
+            isHit = pointsCalculator.checkHit(aiTarget, player.getShips());
             if (isHit) {
                 pointsCalculator.recalculatePoints(ai, isHit);
                 System.out.println("WARNING your ship is under attack!");
@@ -109,7 +69,17 @@ public class Game {
 
     }
 
-    private static List<Ship> changePointIsHitValue(Point target, List<Ship> ships) {
+    private String welcomeCommunicate(Scanner scanner) {
+        System.out.println(ANSI_WHITE.getColor() + "Welcome into Battleships game");
+        System.out.print("Please type your name: ");
+        String name = scanner.next();
+        System.out.println(name + " and AIs ships are randomly generated");
+        System.out.println("To shoot type (X,Y) coordinates when asked for");
+        System.out.println("Generating maps...");
+        return name;
+    }
+
+    private List<Ship> changePointIsHitValue(Point target, List<Ship> ships) {
         for (Ship ship : ships) {
             for (Point point : ship.getPoints()) {
                 if (point.getX() == target.getX() && point.getY() == target.getY()) {
@@ -120,11 +90,11 @@ public class Game {
         return ships;
     }
 
-    private static Point addNewPointValidation(List<Point> hits, Scanner scanner) {
+    private Point addNewPointValidation(List<Point> hits, Scanner scanner) {
         boolean loop = true;
         Point newHit = new Point();
         do {
-            System.out.println("Enter coordinates to shoot, remember: X range (1 - 10), Y range (A -J)");
+            System.out.println(ANSI_WHITE.getColor() + "Enter coordinates to shoot, remember: X range (1 - 10), Y range (A -J)");
             System.out.print("Y: ");
             String xString = scanner.next();
             System.out.print("X: ");
@@ -143,18 +113,20 @@ public class Game {
                         System.out.println("Wrong point coordinates, try again!");
                     }
                 } else {
-                    System.out.println("Wrong Y argument");
+                    System.out.println("Wrong Y coordinate");
                 }
+            } else {
+                System.out.println("Wrong X coordinate");
             }
         } while (loop);
         return newHit;
     }
 
-    private static Boolean inputXValidation(int x) {
+    private Boolean inputXValidation(int x) {
         return x >= 1 && x <= 10;
     }
 
-    private static Boolean inputYValidation(String y) {
+    private Boolean inputYValidation(String y) {
         if (y.length() == 1) {
             return true;
         } else {
@@ -163,7 +135,7 @@ public class Game {
         return false;
     }
 
-    private static Integer letterToInt(String y) {
+    private Integer letterToInt(String y) {
         int returnCoordinate = 0;
         switch (y.toUpperCase()) {
             case "A" -> returnCoordinate = 1;
@@ -178,5 +150,25 @@ public class Game {
             case "J" -> returnCoordinate = 10;
         }
         return returnCoordinate;
+    }
+
+    private Player createNewPlayer(String name, ShipCreator shipCreator) {
+        Player player = new Player();
+        List<Ship> ships = new ArrayList<>(List.of());
+        Ship aiBattleship = shipCreator.createShip(5, ships);
+        ships.add(aiBattleship);
+        Ship aiDestroyer1 = shipCreator.createShip(4, ships);
+        ships.add(aiDestroyer1);
+        Ship aiDestroyer2 = shipCreator.createShip(4, ships);
+        ships.add(aiDestroyer2);
+
+        List<Point> strikes = new ArrayList<>(List.of());
+
+        player.setHits(strikes);
+        player.setShips(ships);
+        player.setScore(0);
+        player.setName(name);
+
+        return player;
     }
 }
