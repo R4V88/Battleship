@@ -14,22 +14,6 @@ public class Game {
 
     public static void main(String[] args) {
         boolean loop = true;
-//        MapIllustrator playerStrikesMap = new MapIllustrator();
-//        List<Point> strikes = List.of(new Point(1, 4), new Point(1, 5, false), new Point(5, 7, true), new Point(5, 9, true), new Point(1, 1, false), new Point(10, 10, true));
-//
-//        MapIllustrator playerShipsMap = new MapIllustrator();
-//        Ship ship1 = new Ship();
-//        ship1.setPoints(List.of(new Point(2, 3), new Point(3, 3), new Point(4, 3 ), new Point(5, 3)));
-//        Ship ship2 = new Ship();
-//        ship2.setPoints(List.of(new Point(5, 5, false), new Point(5, 6), new Point(5, 7, true), new Point(5, 8)));
-//        List<Point> ships = new ArrayList<>(List.of());
-//        ships.addAll(ship1.getPoints());
-//        ships.addAll(ship2.getPoints());
-//
-//        List<Point> opponentStrikes = List.of(new Point(1, 4, false), new Point(1, 5, false), new Point(5, 7, true), new Point(5, 9, false), new Point(1, 1, false), new Point(10, 10, false));
-//
-//        strikesMap.illustrateStrikeMap(map, strikes);
-//        shipsMap.illustrateShipMap(map, ships, opponentStrikes);
 
         Randomizer randomizer = new Randomizer();
         Scanner scanner = new Scanner(System.in);
@@ -51,7 +35,6 @@ public class Game {
         playerShips.add(playerDestroyer1);
         Ship playerDestroyer2 = shipCreator.createShip(4, playerShips);
         playerShips.add(playerDestroyer2);
-        final List<Point> playerAllShipsPoints = shipCreator.getAllShipsPoints(playerShips);
 
         List<Point> playerStrikes = new ArrayList<>(List.of());
 
@@ -84,49 +67,116 @@ public class Game {
         System.out.println("Generating maps...");
 
         player.setName(name);
-//            TODO: user input validation
+
         do {
-            System.out.println("Round: " + round);
-            System.out.println(name + " score: " + player.getScore());
+            System.out.println("\n\n\nRound: " + round);
+            System.out.println(player.getName() + " score: " + player.getScore());
             System.out.println("AI score: " + ai.getScore());
             playerStrikesMap.illustrateStrikeMap(map, player.getHits());
             playerShipsMap.illustrateShipMap(map, player.getShips(), ai.getHits());
-            System.out.println("Enter coordinates to shoot, remember: X range (1 - 10), Y range (A -J)");
-            System.out.print("Y: ");
-            int x = scanner.nextInt();
-            System.out.print("X: ");
-            int y = scanner.nextInt();
-            System.out.println("Your point is: (" + y + "," + x + ")");
-            Point playerTarget = new Point(x, y);
+
+            Point playerTarget = addNewPointValidation(player.getHits(), scanner);
             boolean isHit;
             isHit = pointsCalculator.checkHit(playerTarget, aiShips);
-            if(isHit) {
+            if (isHit) {
                 pointsCalculator.recalculatePoints(player, isHit);
                 System.out.println("You hit the enemy target!");
                 playerTarget.setHit(true);
             }
             player.getHits().add(playerTarget);
-            if(player.getScore() == 13) {
+            if (player.getScore() == 13) {
                 loop = false;
                 System.out.println("Congratulations " + player.getName() + " you won!");
             }
 
-            Point aiTarget = randomizer.getRandomPoint();
+            Point aiTarget = randomizer.getRandomPoint(ai.getHits());
             isHit = pointsCalculator.checkHit(aiTarget, playerShips);
-            if(isHit) {
+            if (isHit) {
                 pointsCalculator.recalculatePoints(ai, isHit);
                 System.out.println("WARNING your ship is under attack!");
                 aiTarget.setHit(true);
-                //TODO: if hit validate user ships -> change isHit to true at target
+                final List<Ship> updatedShips = changePointIsHitValue(aiTarget, player.getShips());
+                player.setShips(updatedShips);
             }
             ai.getHits().add(aiTarget);
-            if(ai.getScore() == 13) {
+            if (ai.getScore() == 13) {
                 loop = false;
                 System.out.println("Congratulations " + player.getName() + " you won!");
             }
 
-            round ++;
+            round++;
         } while (loop);
 
+    }
+
+    private static List<Ship> changePointIsHitValue(Point target, List<Ship> ships) {
+        for (Ship ship : ships) {
+            for (Point point : ship.getPoints()) {
+                if (point.getX() == target.getX() && point.getY() == target.getY()) {
+                    point.setHit(true);
+                }
+            }
+        }
+        return ships;
+    }
+
+    private static Point addNewPointValidation(List<Point> hits, Scanner scanner) {
+        boolean loop = true;
+        Point newHit = new Point();
+        do {
+            System.out.println("Enter coordinates to shoot, remember: X range (1 - 10), Y range (A -J)");
+            System.out.print("Y: ");
+            String xString = scanner.next();
+            System.out.print("X: ");
+            int y = scanner.nextInt();
+            if (inputXValidation(y) && inputYValidation(xString)) {
+                List<String> alphabet = List.of("A", "B", "C", "D", "E", "F", "G", "H", "I", "J");
+                int x;
+                if (alphabet.contains(xString.toUpperCase())) {
+                    x = letterToInt(xString);
+                    if (!hits.contains(new Point(x, y))) {
+                        newHit.setX(x);
+                        newHit.setY(y);
+                        loop = false;
+                        System.out.println("Your point is: (" + x + "," + y + ")");
+                    } else {
+                        System.out.println("Wrong point coordinates, try again!");
+                    }
+                } else {
+                    System.out.println("Wrong Y argument");
+                }
+            }
+        } while (loop);
+        return newHit;
+    }
+
+    private static Boolean inputXValidation(int x) {
+        return x >= 1 && x <= 10;
+    }
+
+    private static Boolean inputYValidation(String y) {
+        if (y.length() == 1) {
+            return true;
+        } else {
+            System.out.println("Y value is invalid, should contain one character");
+        }
+        return false;
+    }
+
+    private static Integer letterToInt(String y) {
+        int returnCoordinate = 0;
+        switch (y.toUpperCase()) {
+            case "A" -> returnCoordinate = 1;
+            case "B" -> returnCoordinate = 2;
+            case "C" -> returnCoordinate = 3;
+            case "D" -> returnCoordinate = 4;
+            case "E" -> returnCoordinate = 5;
+            case "F" -> returnCoordinate = 6;
+            case "G" -> returnCoordinate = 7;
+            case "H" -> returnCoordinate = 8;
+            case "I" -> returnCoordinate = 9;
+            case "J" -> returnCoordinate = 10;
+        }
+        return returnCoordinate;
     }
 }

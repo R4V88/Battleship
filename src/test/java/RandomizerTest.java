@@ -3,7 +3,6 @@ import lombok.experimental.FieldDefaults;
 import model.Direction;
 import model.Point;
 import model.Position;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -185,12 +184,22 @@ class RandomizerTest {
     }
 
     @Test
-    void generatedRandomPointShouldbeInGivenRange(){
+    void generatedRandomPointShouldbeInGivenRange() {
         //GIVEN
-        List<Integer> range = List.of(1 ,2 ,3,4,5,6,7,8,9,10);
+        List<Integer> range = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+        List<Point> hits = List.of(
+                new Point(1, 2),
+                new Point(2, 3),
+                new Point(3, 4),
+                new Point(3, 6),
+                new Point(10, 10),
+                new Point(1, 1),
+                new Point(8, 1),
+                new Point(6, 5),
+                new Point(5, 6));
 
         //WHEN
-        Point point = randomizer.getRandomPoint();
+        Point point = randomizer.getRandomPoint(hits);
 
         assertTrue(range.contains(point.getX()));
         assertTrue(range.contains(point.getY()));

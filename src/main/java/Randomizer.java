@@ -2,6 +2,7 @@ import model.Direction;
 import model.Point;
 import model.Position;
 
+import java.util.List;
 import java.util.Random;
 
 import static model.Direction.DOWN;
@@ -84,9 +85,19 @@ public class Randomizer {
         return new Point(x, y);
     }
 
-    public Point getRandomPoint() {
-        int x = random.nextInt(1, 11);
-        int y = random.nextInt(1, 11);
-        return new Point(x, y);
+    public Point getRandomPoint(List<Point> hits) {
+        boolean loop = true;
+        Point toReturn = new Point();
+        do {
+            int x = random.nextInt(1, 11);
+            int y = random.nextInt(1, 11);
+            if (!hits.contains(new Point(x, y))) {
+                toReturn.setX(x);
+                toReturn.setY(y);
+                loop = false;
+            }
+
+        } while (loop);
+        return toReturn;
     }
 }
