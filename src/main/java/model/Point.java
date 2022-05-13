@@ -16,7 +16,7 @@ import lombok.ToString;
 public class Point {
     int x;
     int y;
-    boolean isHit;
+    boolean isHit = false;
 
     public Point(int x, int y) {
         this.x = x;

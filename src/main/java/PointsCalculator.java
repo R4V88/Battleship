@@ -13,15 +13,15 @@ public class PointsCalculator {
         List<Point> shipsPoints = shipCreator.getAllShipsPoints(ships);
 
         for (Point point : shipsPoints) {
-            if(point.equals(target)){
+            if (point.equals(target)) {
                 isHit = true;
-            };
+            }
         }
         return isHit;
     }
 
     public void recalculatePoints(Player player, Boolean value) {
-        if(value) {
+        if (value) {
             player.setScore(player.getScore() + 1);
         }
     }

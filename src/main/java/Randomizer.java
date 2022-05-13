@@ -91,12 +91,11 @@ public class Randomizer {
         do {
             int x = random.nextInt(1, 11);
             int y = random.nextInt(1, 11);
-            if (!hits.contains(new Point(x, y))) {
+            if (!hits.contains(new Point(x, y, false)) && !hits.contains(new Point(x, y, true))) {
                 toReturn.setX(x);
                 toReturn.setY(y);
                 loop = false;
             }
-
         } while (loop);
         return toReturn;
     }

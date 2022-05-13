@@ -1,14 +1,10 @@
-import model.Map;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class GameTest {
     private Game underTest;
 
     @BeforeEach
-    void setUp(){
+    void setUp() {
         underTest = new Game();
     }
 

@@ -1,10 +1,8 @@
 import model.Point;
 import model.Ship;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -47,7 +45,7 @@ class ShipCreatorTest {
         totalShipsPoints.addAll(existingShip1.getPoints());
         totalShipsPoints.addAll(existingShip2.getPoints());
 
-        for(Point point : createdShip.getPoints()) {
+        for (Point point : createdShip.getPoints()) {
             assertFalse(totalShipsPoints.contains(point));
         }
     }
@@ -70,7 +68,7 @@ class ShipCreatorTest {
         totalShipsPoints.addAll(existingShip1.getPoints());
         totalShipsPoints.addAll(existingShip2.getPoints());
 
-        for(Point point : createdShip.getPoints()) {
+        for (Point point : createdShip.getPoints()) {
             assertFalse(totalShipsPoints.contains(point));
         }
     }
@@ -97,14 +95,14 @@ class ShipCreatorTest {
 
 
         //THEN
-        for(Point point : ship1.getPoints()) {
+        for (Point point : ship1.getPoints()) {
             assertFalse(ship2.getPoints().contains(point));
         }
         for (Point point : ship2.getPoints()) {
             assertFalse(ship3.getPoints().contains(point));
         }
 
-        for(Point point : ship3.getPoints()) {
+        for (Point point : ship3.getPoints()) {
             assertFalse(ship1.getPoints().contains(point));
         }
     }
@@ -112,8 +110,8 @@ class ShipCreatorTest {
     @Test
     void testIfReturnedListContainsAllPoints() {
         //GIVEN
-        Ship ship1 = new Ship(3, List.of(new Point(1,5), new Point(1,6), new Point(1,7)));
-        Ship ship2 = new Ship(2, List.of(new Point(2,5), new Point(2,6)));
+        Ship ship1 = new Ship(3, List.of(new Point(1, 5), new Point(1, 6), new Point(1, 7)));
+        Ship ship2 = new Ship(2, List.of(new Point(2, 5), new Point(2, 6)));
         List<Point> totalPoints = new ArrayList<>(List.of());
         totalPoints.addAll(ship1.getPoints());
         totalPoints.addAll(ship2.getPoints());

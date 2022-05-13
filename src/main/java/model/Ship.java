@@ -16,4 +16,10 @@ import java.util.List;
 public class Ship {
     Integer shipLength;
     List<Point> points;
+    Boolean isSunk = false;
+
+    public Ship(Integer shipLength, List<Point> points) {
+        this.shipLength = shipLength;
+        this.points = points;
+    }
 }

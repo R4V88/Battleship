@@ -12,11 +12,6 @@ import static model.Colors.ANSI_YELLOW;
 
 public class MapIllustrator {
     private final ShipCreator shipCreator = new ShipCreator();
-//    private static final String ANSI_RED = "\u001B[31m";
-//    private static final String ANSI_BLUE = "\u001B[34m";
-//    private static final String ANSI_GREEN = "\u001B[32m";
-//    private static final String ANSI_YELLOW = "\u001B[33m";
-//    private static final String ANSI_PURPLE = "\u001B[35m";
 
     public void illustrateStrikeMap(Map map, List<Point> strikes) {
         char alphabetStart = 'A';
@@ -85,18 +80,18 @@ public class MapIllustrator {
     private String returnTextColorAndSignForShipsMap(List<Point> ships, int x, int y, List<Point> opponentStrikes) {
         String color = ANSI_BLUE.getColor() + "~";
 
-        for(Point strike: opponentStrikes) {
-            if(strike.getX() == x &&  strike.getY() == y){
+        for (Point strike : opponentStrikes) {
+            if (strike.getX() == x && strike.getY() == y) {
                 if (!strike.isHit()) {
                     color = ANSI_PURPLE.getColor() + "X" + ANSI_BLUE.getColor();
                 }
             }
         }
 
-        for(Point ship : ships) {
-            if(ship.getX() == y && ship.getY() == x ) {
+        for (Point ship : ships) {
+            if (ship.getX() == y && ship.getY() == x) {
                 color = ANSI_GREEN.getColor() + "O" + ANSI_BLUE.getColor();
-                if(ship.isHit()) {
+                if (ship.isHit()) {
                     color = ANSI_RED.getColor() + "X" + ANSI_BLUE.getColor();
                 }
             }
